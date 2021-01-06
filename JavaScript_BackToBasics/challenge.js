@@ -184,7 +184,7 @@ const armstrongNum = (n) => {
 
 
 // Challenge 6 \\
-// Given one array of integers(numbers), return ineces of two numbers that add up to the target.
+// Given one array of integers(numbers), return indeces of two numbers that add up to the target.
 // will each input have exactly one solution? yes
 // can we use the same element twice? no
 
@@ -216,4 +216,91 @@ const twoSumTwo = (nums, target) => {
     }
 }
 
-console.log(twoSumTwo(nums1, target1));
+//console.log(twoSumTwo(nums1, target1));
+
+// Challenge 7
+// fibonacci series
+// print out the n-th entry in the fibonacci series.
+// Fibonacci series is an ordering of numbers where each number is the sum of preceeding two numbers.
+// For example, the sequence 
+// [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+// forms the first ten entries of the fibonacci series.
+// Example:
+// fib(4) === 3
+
+const fibItterative = (n) => {
+    // create an array up to entry n
+    // first two entries (0, 1) are useless
+    const result = [0, 1];
+    //for loop that begins at 2
+    for (let i = 2; i <= n; i++) {
+        // 
+        const a = result[i - 1];
+        console.log("this is a: " + a);
+        // 
+        const b = result[i - 2];
+        console.log("this is b: " + b);
+
+        console.log("result: " + a + " + " + b);
+        console.log("sum: " + (a+b));
+
+        // sum of a and b are pushed to the end of the result array above
+        result.push(a + b);
+    }
+    // identify it's value 
+    return result[n];
+    // return it's value
+
+    // linear runtime. why? one for loop
+    // for every increase in n, we have to do an additional calculation. 
+}
+
+//console.log(fibItterative(10));
+
+const fibRecursive = (n) => {
+
+    if (n < 2) {
+        return n;
+    }
+    console.log("first: " + (n - 1));
+    console.log("second: " + (n - 2));
+    console.log("sum: " + ((n-1) + (n-2)));
+
+    return fibRecursive(n - 1) + fibRecursive(n - 2);
+}
+//exponential runtime... supabad! solve this with memoization
+
+//console.log(fibRecursive(20))
+
+// memoization - store arguments of each function call along with the result. 
+// If the function is called again with the SAME arguments, 
+// return the precomputed result rather than running the function again
+
+// generic memoize
+const memoize = (fn) => {
+    const cache = {};
+    // assume multiple arguments 
+    return function(...args) {
+        if (cache[args]) {
+            return cache[args];
+        }
+
+        const result = fn.apply(this, args);
+        cache[args] = result;
+        
+        return result;
+    }
+}
+const fibSlow = (n) => {
+
+    if (n < 2) {
+        return n;
+    }
+
+    return fibSlow(n - 1) + fibSlow(n - 2);
+}
+
+const fullfub = memoize(fibSlow);
+
+console.log(fullfub(0));
+
